@@ -1,6 +1,7 @@
 ﻿CREATE DATABASE JoinsUnion
 USE JoinsUnion
 --Yaddan cixib Aze dilinde qalib Tables ve Meals Id sinin ilk herfi Aze elifbasi ile getdi
+
 CREATE TABLE Meals
 (
 İd int primary key identity,
@@ -47,14 +48,41 @@ INSERT INTO Orders VALUES
 (1,4,'2024.11.15 21:27:30')
 SELECT * FROM Orders
 
---3
+INSERT INTO Orders VALUES 
+(2,1,'2024.11.15 21:54:12')
+
+
+--1.Query
+
+SELECT t.*,COUNT (o.İd) AS 'CountOfOrdersToTable' FROM [Tables] t
+LEFT JOIN
+Orders o
+ON 
+o.TableId=t.İd
+GROUP BY t.İd,t.Number
+
+
+--2.Query
+
+SELECT m.*, COUNT(o.MealId) AS 'OrdersCount' FROM Meals m
+JOIN 
+Orders o
+ON 
+o.MealId = m.İd
+GROUP BY m.İd,m.Name,m.Price
+
+
+--3.Query
+
 SELECT o.*, m.[Name] AS 'MealName' FROM Orders o
 JOIN 
 Meals m
 ON
 m.İd = o.MealId
 
---4
+
+--4.Query
+
 SELECT o.*,m.[Name] AS 'MealName', t.Number AS 'TableNumber' FROM Orders o
 JOIN
 Meals m
@@ -65,7 +93,9 @@ JOIN
 ON 
 o.TableId = t.İd
 
---5
+
+--5.Query
+
 SELECT t.*,SUM(m.Price) AS 'TotalSum' FROM [Tables] t
 JOIN 
 Orders o
@@ -94,7 +124,17 @@ GROUP BY t.İd,t.Number
 --COALESCE'siz yazanda left joinin istifadesi zamani 5 ci tableda sifaris olmadigindan NULL yazisi gelir,Coalesce sayesinde biz o null'i 0 ile evez edirik 
 
 
---8
+--6.Query
+SELECT DATEDIFF(HOUR,MIN(OrderDate),MAX(OrderDate)) AS 'Difference' FROM [Tables] t
+JOIN 
+Orders o
+ON 
+t.İd=o.TableId
+WHERE t.İd=1
+
+
+--8.Query
+
 SELECT * FROM [Tables] t
 LEFT JOIN 
 Orders o
