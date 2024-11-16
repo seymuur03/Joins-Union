@@ -125,6 +125,7 @@ GROUP BY t.İd,t.Number
 
 
 --6.Query
+
 SELECT DATEDIFF(HOUR,MIN(OrderDate),MAX(OrderDate)) AS 'Difference' FROM [Tables] t
 JOIN 
 Orders o
@@ -133,9 +134,17 @@ t.İd=o.TableId
 WHERE t.İd=1
 
 
+--7.Query
+
+INSERT INTO Orders VALUES
+(2,2,'2024.11.16 20:00:15'),
+(2,2,'2024.11.16 19:52:15')
+SELECT * FROM Orders WHERE OrderDate <= DATEADD(MINUTE ,-30,GETDATE())
+
+
 --8.Query
 
-SELECT * FROM [Tables] t
+SELECT t.* FROM [Tables] t
 LEFT JOIN 
 Orders o
 ON 
@@ -143,4 +152,17 @@ t.İd=o.TableId
 WHERE o.İd is null
 
 
+--9.Query
 
+INSERT INTO Orders VALUES 
+(3,2,'2024.11.16 21:05:15')
+
+SELECT t.* FROM [Tables] t
+LEFT JOIN
+Orders o
+ON 
+o.TableId=t.İd
+WHERE o.OrderDate >= DATEADD(HOUR,-1,GETDATE()) 
+GROUP BY t.İd,t.Number
+
+--Tamamlanmadi(9.query)
